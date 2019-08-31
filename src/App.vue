@@ -2,35 +2,31 @@
   <v-app>
     <v-app-bar app>
       <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+        <span>ハイ＆ロー</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
+      <span class="mr-2">ぬるぽ</span>
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <HighLow />
     </v-content>
+    <v-content></v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import HighLow from "./components/HighLow/HighLow.vue";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld,
-  },
-  data: () => ({
-    //
-  }),
+  components: { HighLow }
 };
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap');
+
+#app {
+  font-family: 'Kosugi Maru', sans-serif;
+}
+</style>
