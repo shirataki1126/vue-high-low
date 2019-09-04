@@ -24,7 +24,8 @@ export default {
       } else {
         // 山札が0枚のとき
       }
-    }
+    },
+    
   }
 };
 </script>
