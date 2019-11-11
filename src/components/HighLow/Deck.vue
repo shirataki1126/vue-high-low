@@ -1,11 +1,13 @@
 <template>
-  <v-col>
-    <Card v-for="(cardRank, index) in this.hand" v-bind:key="index" v-bind:rank="cardRank"></Card>
-  </v-col>
+  <v-row>
+    <v-col v-for="(card, index) in this.hand" v-bind:key="index" align="center" justify="center" cols="4">
+      <Card v-bind:rank="card"></Card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-import Card from "./Card.vue";
+import Card from './Card.vue'
 
 export default {
   components: { Card },
@@ -14,18 +16,25 @@ export default {
     hand: []
   }),
   methods: {
-    draw: function() {
+    draw: function () {
       if (this.stock.length > 0) {
         const drawedCard = this.stock.splice(
           Math.floor(Math.random() * this.stock.length),
           1
-        );
-        this.hand.push(drawedCard[0]);
+        )
+        this.hand.push(drawedCard[0])
       } else {
         // 山札が0枚のとき
       }
     },
-    
+    getScore: function () {
+      let score = this.hand.reduce((p, x) => (p += x), 0)
+      return score
+    },
+    initialize: function () {
+      this.stock = this.stock.concat(this.hand)
+      this.hand = []
+    }
   }
-};
+}
 </script>

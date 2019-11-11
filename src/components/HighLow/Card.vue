@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card max-width="200px">
     <v-card-text>{{ this.rank }}</v-card-text>
   </v-card>
 </template>
@@ -9,5 +9,5 @@ export default {
   props: {
     rank: Number
   }
-};
+}
 </script>

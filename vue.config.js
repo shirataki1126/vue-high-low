@@ -1,0 +1,75 @@
+const path = require("path");
+
+module.exports = {
+  publicPath: "/",
+  outputDir: "dist",
+  assetsDir: "",
+  indexPath: "index.html",
+  filenameHashing: true,
+  pages: {
+    index: {
+      entry: "src/main.js",
+      template: "public/index.html",
+      filename: "index.html",
+      title: "Index Page",
+      chunks: ["chunk-vendors", "chunk-common", "index"],
+    },
+    // subpage: "src/subpage/main.js",
+  },
+  lintOnSave: true,
+  runtimeCompiler: false,
+  transpileDependencies: [],
+  productionSourceMap: true,
+  crossorigin: undefined,
+  integrity: false,
+  configureWebpack: {
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          loader: "babel-loader",
+          exclude: /node_modules/,
+        },
+      ],
+    },
+    resolve: {
+      extensions: [".js", ".vue"],
+    },
+    plugins: [],
+  },
+  chainWebpack: (config) => {},
+  css: {
+    modules: false,
+    extract: process.env.NODE_ENV === "production",
+    sourceMap: false,
+    loaderOptions: {},
+  },
+  devServer: {
+    // host: "127.0.0.1",
+    host: "::",
+    port: 8080,
+    useLocalIp: true,
+    // public: "localhost:8080",
+    http2: false,
+    https: false,
+    // proxy: "",
+    contentBase: path.resolve(__dirname, "dist"),
+    clientLogLevel: "info",
+    quiet: true,
+    noInfo: false,
+    overlay: {
+      warnings: false,
+      errors: false,
+    },
+    compress: true,
+    disableHostCheck: false,
+    historyApiFallback: true,
+    hot: true,
+    liveReload: true,
+    watchContentBase: true,
+    open: true,
+  },
+  parallel: require("os").cpus().length > 1,
+  // pwa: {},
+  // pluginOptions: {},
+};

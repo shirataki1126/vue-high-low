@@ -1,55 +1,94 @@
 <template>
-  <v-content>
+  <div>
     <div v-show="!isPlaying">
-      <v-btn color="primary" v-on:click="start()">はじめる</v-btn>
-      <v-btn v-if="!isFirstTime" color="secondary" v-on:click="retry()">リトライ</v-btn>
+      <v-row>
+        <v-col>
+          <v-btn block color="primary" v-on:click="start()">はじめる</v-btn>
+        </v-col>
+        <v-col v-if="!isFirstTime" cols="6">
+          <v-btn block color="secondary" v-on:click="retry()">リトライ</v-btn>
+        </v-col>
+      </v-row>
     </div>
     <div v-show="isPlaying">
       <div>
-        <v-row align="center" justify="center" class="flex-column flex-md-row flex-sm-row">
-          <Deck ref="parentDeck"></Deck>
-        </v-row>
-        <v-btn block color="primary" v-on:click="parentDraw()">俺のターン！ドロー！</v-btn>
+        <Deck ref="parentDeck"></Deck>
       </div>
       <div>
-        <v-row align="center" justify="center" class="flex-column flex-md-row flex-sm-row">
-          <Deck ref="playerDeck"></Deck>
-        </v-row>
-        <v-btn block color="primary" v-on:click="playerDraw()">俺のターン！ドロー！</v-btn>
+        <Deck ref="playerDeck"></Deck>
       </div>
-      <v-btn color="secondary" v-on:click="end()">ええい、もう終いじゃ！</v-btn>
+      <div v-if="!isEnded">
+        <v-row>
+          <v-col cols="6">
+            <v-btn block color="primary" v-on:click="result(true)">ハイ</v-btn>
+          </v-col>
+          <v-col cols="6">
+            <v-btn block color="secondary" v-on:click="result(false)">ロー</v-btn>
+          </v-col>
+        </v-row>
+      </div>
+      <div v-if="isEnded">
+        <v-row>
+          <v-col cols="12" class="text-center">
+            {{this.resultMessage}}
+          </v-col>
+          <v-col cols="6">
+            <v-btn block color="secondary" v-on:click="retry()">リトライ</v-btn>
+          </v-col>
+          <v-col cols="6">
+            <v-btn block color="gray" v-on:click="end()">おしまい</v-btn>
+          </v-col>
+        </v-row>
+      </div>
     </div>
-  </v-content>
+  </div>
 </template>
 
 <script>
-import Deck from "./Deck.vue";
+import Deck from './Deck.vue'
 
 export default {
   components: { Deck },
   data: () => ({
     isPlaying: false,
-    isFirstTime: true
+    isEnded: false,
+    isFirstTime: true,
+    resultMessage: ''
   }),
   methods: {
-    start: function() {
-      this.isPlaying = true;
+    start: function () {
+      this.isEnded = false
+      this.isPlaying = true
       if (this.isFirstTime) {
-        this.isFirstTime = false;
+        this.isFirstTime = false
       }
+      this.$refs.parentDeck.draw()
+      this.$refs.parentDeck.draw()
+      this.$refs.playerDeck.draw()
     },
     end: function () {
-      this.isPlaying = false;
+      this.$refs.parentDeck.initialize()
+      this.$refs.playerDeck.initialize()
+      this.isPlaying = false
     },
     retry: function () {
-      this.isPlaying = true;
+      this.$refs.parentDeck.initialize()
+      this.$refs.playerDeck.initialize()
+      this.isPlaying = true
+      this.start()
     },
-    parentDraw: function() {
-      this.$refs.parentDeck.draw();
-    },
-    playerDraw: function() {
-      this.$refs.playerDeck.draw();
+    result: function (isHigher) {
+      this.$refs.parentDeck.draw()
+      this.$refs.playerDeck.draw()
+      this.$refs.playerDeck.draw()
+
+      if ((this.$refs.parentDeck.getScore() < this.$refs.playerDeck.getScore()) === isHigher) {
+        this.resultMessage = '当たり！'
+      } else {
+        this.resultMessage = 'はずれ！'
+      }
+      this.isEnded = true
     }
   }
-};
+}
 </script>
